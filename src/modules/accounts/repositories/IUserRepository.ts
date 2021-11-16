@@ -5,7 +5,14 @@ interface IUserRepository {
     create(data: ICreateUserDTO): Promise<User>;
     list(): Promise<User[]>;
     findByEmail(email: string): Promise<User>;
-    findByUser(id: string): Promise<User>;
+    findById(user: string): Promise<User>;
+    deleteUser(user: string): Promise<void>;
+    updateUser(
+        id: string,
+        name: string,
+        email: string,
+        password: string
+    ): Promise<void>;
 }
 
 export { IUserRepository };

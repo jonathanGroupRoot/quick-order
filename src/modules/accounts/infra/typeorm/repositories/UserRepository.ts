@@ -31,6 +31,39 @@ class UserRepository implements IUserRepository {
     async findByUser(id: string): Promise<User> {
         return this.repository.findOne(id);
     }
+
+    async findById(user: string): Promise<User> {
+        const users = await this.repository.findOne({
+            where: {
+                id: user,
+            },
+        });
+        return users;
+    }
+
+    async deleteUser(user: string): Promise<void> {
+        const users = await this.repository.findOne({
+            where: {
+                id: user,
+            },
+        });
+        await this.repository.delete(users);
+    }
+
+    async updateUser(
+        id: string,
+        name: string,
+        email: string,
+        password: string
+    ): Promise<void> {
+        await this.repository
+            .createQueryBuilder()
+            .update()
+            .set({ name, email, password })
+            .where("id = :id")
+            .setParameters({ id })
+            .execute();
+    }
 }
 
 export { UserRepository };
