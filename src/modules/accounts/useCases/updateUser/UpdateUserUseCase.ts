@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import { inject, injectable } from "tsyringe";
 
 import { IUserRepository } from "@modules/accounts/repositories/IUserRepository";
@@ -28,7 +29,12 @@ export class UpdateUserUseCase {
         if (!user) {
             throw new AppError("User does not exists");
         }
-
-        await this.updateUserUseCase.updateUser(user.id, name, email, password);
+        const passwordHash = await hash(password, 8);
+        await this.updateUserUseCase.updateUser(
+            user.id,
+            name,
+            email,
+            passwordHash
+        );
     }
 }

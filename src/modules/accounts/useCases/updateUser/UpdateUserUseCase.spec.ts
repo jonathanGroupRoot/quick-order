@@ -1,6 +1,7 @@
 import { hash } from "bcrypt";
 
 import { UserRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
+import { AppError } from "@shared/errors/AppError";
 
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { UpdateUserUseCase } from "./UpdateUserUseCase";
@@ -25,17 +26,37 @@ describe("Update User", () => {
             password: passwordHash,
         });
 
-        const updateUser = await updateUserUseCase.execute({
+        await updateUserUseCase.execute({
             id: user.id,
-            name: "Root",
-            email: "Root@gmail.com",
-            password: "909",
+            name: "Jonathan",
+            email: "root@gmail.com",
+            password: passwordHash,
         });
-        console.log(updateUser);
 
-        // expect(updateUser).toMatchObject({
-        //     name: "root",
-        //     email: "Root@gmail.com",
-        // });
+        expect(user).toMatchObject({
+            name: "Jonathan",
+            email: "root@gmail.com",
+        });
+        expect(user.name).toBe("Jonathan");
+        expect(user.email).toBe("root@gmail.com");
+    });
+
+    it("should not be able to update the profile from non-existing user", async () => {
+        const passwordHash = await hash("admin", 8);
+
+        await createUserUseCase.execute({
+            name: "root",
+            email: "jonathanVINI",
+            password: passwordHash,
+        });
+
+        await expect(
+            updateUserUseCase.execute({
+                id: "non-existing-id",
+                name: "JonathanRooot",
+                email: "jonathanvinicius@gmail.com",
+                password: "98281",
+            })
+        ).rejects.toEqual(new AppError("User does not exists"));
     });
 });
