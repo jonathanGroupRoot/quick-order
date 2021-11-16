@@ -1,6 +1,6 @@
 import { AppError } from "@shared/errors/AppError";
 
-import { UserRepositoryInMemory } from "../repositories/in-memory/UserRepositoryInMemory";
+import { UserRepositoryInMemory } from "../../repositories/in-memory/UserRepositoryInMemory";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 let userRepositoryInMemory: UserRepositoryInMemory;

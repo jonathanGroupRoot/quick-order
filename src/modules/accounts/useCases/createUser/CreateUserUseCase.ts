@@ -5,7 +5,7 @@ import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
 import { IUserRepository } from "@modules/accounts/repositories/IUserRepository";
 import { AppError } from "@shared/errors/AppError";
 
-import { User } from "../infra/typeorm/entities/User";
+import { User } from "../../infra/typeorm/entities/User";
 
 @injectable()
 class CreateUserUseCase {
