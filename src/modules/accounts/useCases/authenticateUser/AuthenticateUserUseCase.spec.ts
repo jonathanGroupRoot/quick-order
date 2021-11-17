@@ -1,21 +1,26 @@
 import { hash } from "bcrypt";
 
 import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
+import { UserTokenRepository } from "@modules/accounts/infra/typeorm/repositories/UserTokenRepository";
 import { UserRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
+import { IUserTokenRepository } from "@modules/accounts/repositories/IUserTokenRepository";
 import { AppError } from "@shared/errors/AppError";
 
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
 
 let userRepositoryInMemory: UserRepositoryInMemory;
+let userTokenRepositoryInMemory: IUserTokenRepository;
 let authenticateUserUseCase: AuthenticateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 
 describe("Authenticate User", () => {
     beforeAll(async () => {
         userRepositoryInMemory = new UserRepositoryInMemory();
+        userTokenRepositoryInMemory = new UserTokenRepository();
         authenticateUserUseCase = new AuthenticateUserUseCase(
-            userRepositoryInMemory
+            userRepositoryInMemory,
+            userTokenRepositoryInMemory
         );
         createUserUseCase = new CreateUserUseCase(userRepositoryInMemory);
     });
