@@ -17,10 +17,10 @@ let authenticateUserUseCase: AuthenticateUserUseCase;
 let createUserUseCase: CreateUserUseCase;
 
 describe("Authenticate User", () => {
-    beforeAll(async () => {
+    beforeEach(() => {
         userRepositoryInMemory = new UserRepositoryInMemory();
         userTokenRepositoryInMemory = new UserTokenRepository();
-        dayjsDateProvider = new DayjsDateProvider();
+
         authenticateUserUseCase = new AuthenticateUserUseCase(
             userRepositoryInMemory,
             userTokenRepositoryInMemory,
@@ -46,6 +46,15 @@ describe("Authenticate User", () => {
         expect(userAuthenticate).toHaveProperty("token");
         expect(userAuthenticate.user.name).toEqual("Jonathan vinicius");
         expect(userAuthenticate.user.email).toEqual("jonah@gmail.com");
+    });
+
+    it("should not be able to authenticate an nonexistent user", async () => {
+        await expect(
+            authenticateUserUseCase.execute({
+                email: "falseEmail@gmail.com",
+                password: "1212121",
+            })
+        ).rejects.toEqual(new AppError("Email or password incorrect"));
     });
 
     it("Not should be able authenticate user case email incorrect", async () => {

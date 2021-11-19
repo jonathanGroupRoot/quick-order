@@ -7,7 +7,6 @@ import { UserToken } from "../entities/UserToken";
 
 export class UserTokenRepository implements IUserTokenRepository {
     private repository: Repository<UserToken>;
-
     constructor() {
         this.repository = getRepository(UserToken);
     }
@@ -23,7 +22,7 @@ export class UserTokenRepository implements IUserTokenRepository {
             user_id,
         });
 
-        this.repository.save(userToken);
+        await this.repository.save(userToken);
         return userToken;
     }
 

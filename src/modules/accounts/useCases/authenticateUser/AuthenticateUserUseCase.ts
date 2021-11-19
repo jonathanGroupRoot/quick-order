@@ -41,7 +41,6 @@ export class AuthenticateUserUseCase {
     }: IRequestAuthenticate): Promise<IResponseToken> {
         const user = await this.authenticateUserUseCase.findByEmail(email);
 
-        const { id } = user;
         if (!user) {
             throw new AppError("Email or password incorrect");
         }
@@ -74,7 +73,7 @@ export class AuthenticateUserUseCase {
         );
 
         await this.userTokenRepository.create({
-            user_id: id,
+            user_id: user.id,
             refresh_token,
             expires_date,
         });
