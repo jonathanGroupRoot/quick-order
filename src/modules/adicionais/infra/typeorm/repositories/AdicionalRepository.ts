@@ -35,8 +35,7 @@ export class AdicionalRepository implements IAdicionalRepository {
     }
 
     async deleteById(id: string): Promise<void> {
-        const adicional = await this.repository.findOne(id);
-        await this.repository.delete(adicional);
+        await this.repository.delete(id);
     }
 
     async findById(id: string): Promise<Adicional> {
